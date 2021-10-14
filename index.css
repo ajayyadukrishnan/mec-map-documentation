@@ -1,0 +1,492 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans');
+@import url('https://fonts.googleapis.com/css2?family=Lato');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script');
+@import url('https://fonts.googleapis.com/css2?family=Birthstone');
+/* @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css"; */
+
+html, body {
+    font-family: 'Josefin Sans', sans-serif !important;
+    margin: 0 !important;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    -webkit-print-color-adjust: exact;
+    scroll-behavior: smooth !important;
+}
+
+@media print {
+    * {
+        overflow: visible !important;
+    }
+    @page {
+        margin: 0;
+        margin-top: 5vh;
+        margin-bottom: 5vh;
+    }
+    .printerDiv {
+        visibility: hidden !important;
+        display: none !important;
+    }
+    .coverPage {
+        display: flex;
+        justify-content: center !important;
+        align-items: center !important;
+        height: 100%;
+    }
+    #editLink {
+        visibility: hidden !important;
+        display: none !important;
+    }
+    #deleteLink {
+        visibility: hidden !important;
+        display: none !important;
+    }
+    .split {
+        position: relative !important;
+    }
+    .left {
+        visibility: hidden !important;
+        display: none !important;
+    }
+    .right {
+        position: relative !important;
+        width: 100% !important;
+        left: 50%;
+        padding-left: 5vw;
+        padding-right: 5vw;
+        transform: translate(-50%, 0%);
+        overflow-y: auto;
+    }
+    .mapPDF {
+        padding-left: 5vw;
+        padding-right: 5vw;
+        padding-top: 10vh;
+        padding-bottom: 10vh;
+    }
+    .mapName {
+        text-align: center !important;
+        max-width: 80% !important;
+        word-wrap: break-word !important;
+    }
+    .pagebreak {
+        clear: both !important;
+        display: block !important;
+        page-break-after: always !important;
+    }
+    table {
+        table-layout: fixed !important;
+        margin-right: 10vw !important;
+        overflow: auto !important;
+        word-wrap: break-word !important;
+        border: 1px solid rgba(0, 0, 0, 0.2) !important;
+        padding: 24px 12px !important;
+        box-sizing: border-box !important;
+        border-radius: 3px !important;
+        /* box-shadow: 0px 4px 0px 2px rgba(0, 0, 0, 0.1); */
+        overflow-x: hidden !important;
+        width: 100% !important;
+        white-space: pre-wrap !important;
+        /* css-3 */
+        white-space: -moz-pre-wrap !important;
+        /* Mozilla, since 1999 */
+        white-space: -pre-wrap !important;
+        /* Opera 4-6 */
+        white-space: -o-pre-wrap !important;
+        /* Opera 7 */
+        word-wrap: break-word !important;
+        text-align: left !important;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1) !important;
+    }
+    td {
+        /* white-space: pre-wrap; */
+        /* css-3 */
+        white-space: -moz-pre-wrap !important;
+        /* Mozilla, since 1999 */
+        white-space: -pre-wrap !important;
+        /* Opera 4-6 */
+        white-space: -o-pre-wrap !important;
+        /* Opera 7 */
+        word-wrap: break-word !important;
+    }
+    tr:nth-child(odd) {
+        background-color: grey !important;
+    }
+    #mapAuthor {
+        font-size: 1.5em;
+        word-break: break-all;
+    }
+}
+
+.split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+
+.left {
+    left: 0;
+    background-color: white;
+}
+
+.right {
+    right: 0;
+    background-color: white;
+    margin: auto;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    text-align: justify;
+    word-wrap: break-word;
+    display: block;
+}
+
+.centered img {
+    width: 150px;
+    border-radius: 50%;
+}
+
+.title {
+    font-family: 'Josefin Sans', sans-serif;
+    color: #632F94;
+}
+
+.subtitle {
+    font-size: 28px;
+    font-family: 'Dancing Script', cursive;
+    color: #632F94;
+}
+
+.authorDiv {
+    color: #632F94;
+}
+
+.authorLabel {
+    color: #632F94 !important;
+}
+
+.fileDiv {
+    color: #632F94;
+}
+
+.customButton, .customButton:hover, .customButton:active, .customButton:focus {
+    color: #632F94;
+    background: #fff;
+    background-color: #fff;
+}
+
+.input-field {
+    color: #632F94 !important;
+    font-family: 'Josefin Sans', sans-serif !important;
+}
+
+.input-field input[type=text]:focus+label {
+    color: #632F94 !important;
+}
+
+.input-field input[type=text]:focus {
+    padding-left: 1vw;
+    border: solid 2px #632F94;
+    border-radius: 5px;
+    border-bottom: 1px solid #632F94 !important;
+    box-shadow: 0 1px 0 0 #632F94 !important;
+}
+
+.file-path input[type=text]:focus+label {
+    color: #632F94 !important;
+}
+
+.file-path {
+    padding-left: 1vw;
+    border: solid 2px #632F94;
+    border-radius: 5px;
+    border-bottom: 1px solid #632F94 !important;
+    box-shadow: 0 1px 0 0 #632F94 !important;
+}
+
+.mappingElement::after {
+    content: "\a\a";
+    white-space: pre;
+}
+
+.colorPickerDiv {
+    padding-left: 1vw;
+}
+
+.colorpickerLabel {
+    font-weight: bold;
+    color: #632F94;
+    font-size: 1em;
+}
+
+#colorpicker {
+    top: 10vh !important;
+}
+
+.submitDiv {
+    padding-left: 0.8vw;
+}
+
+.submitButton, .submitButton:hover, .submitButton:active, .submitButton:focus {
+    color: #632F94;
+    background: #fff;
+    background-color: #fff;
+}
+
+pre {
+    overflow: auto;
+    word-wrap: break-word;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 24px 12px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    box-shadow: 0px 4px 0px 2px rgba(0, 0, 0, 0.1);
+    overflow-x: hidden;
+    width: 100%;
+    white-space: pre-wrap;
+    /* css-3 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+    text-align: left;
+}
+
+.functionCode {
+    color: red;
+}
+
+table {
+    table-layout: fixed;
+    margin-right: 10vw;
+    overflow: auto;
+    word-wrap: break-word;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 24px 12px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    /* box-shadow: 0px 4px 0px 2px rgba(0, 0, 0, 0.1); */
+    overflow-x: hidden;
+    width: 100%;
+    white-space: pre-wrap;
+    /* css-3 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+    text-align: left;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 5vh;
+}
+
+th {
+    padding: 15px;
+}
+
+td {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.functionDescription {
+    /* display: inline-block; */
+    word-wrap: break-word !important;
+}
+
+.functionDescription::after {
+    content: "\a";
+    white-space: pre;
+}
+
+/* table::after{
+    content: "\a\a";
+    white-space: pre;
+} */
+
+td {
+    /* white-space: pre-wrap; */
+    /* css-3 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+}
+
+tr:nth-child(odd) {
+    background-color: lightblue !important;
+}
+
+.printerDiv {
+    float: right;
+}
+
+/* .printerButton {
+    padding-bottom: 3.5vh;
+} */
+
+.btn {
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: #632F94;
+    background: none;
+    cursor: pointer;
+    padding-top: 2px;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    outline: none;
+    position: relative;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.btn-1a:hover {
+    background: #632F94;
+}
+
+.btn:after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.btn:before {
+    font-family: 'icomoon';
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+}
+
+.btn-1 {
+    border: 3px solid #fff;
+    color: #632F94;
+}
+
+/* Button 1a */
+
+.btn-1a:hover, .btn-1a:active, .btn-1a:focus {
+    color: #632F94;
+    background: #fff;
+}
+
+#todayDate {
+    font-size: 1.5em;
+}
+
+#mapAuthor {
+    font-size: 1.5em;
+    word-break: break-all;
+}
+
+.parent {
+    display: flex;
+    flex-grow: 0;
+}
+
+.functionHeader {
+    /* float: left; */
+}
+
+.editDescriptionButton {
+    float: right;
+    /* left: 5vw; */
+    bottom: 0.2vw;
+    text-transform: none;
+}
+
+#submitButton {
+    text-transform: none;
+    background-color: #632F94;
+}
+
+#printerButton {
+    text-transform: none;
+    background-color: #632F94 !important;
+}
+
+#deleteLink{
+    margin-left: auto !important;
+}
+
+.modificationDiv {
+    margin-left: auto !important;
+}
+
+.editButton {
+    background-color: white !important;
+    position: relative;
+    content: "\f007";
+    font-family: 'Font Awesome\ 5 Free' !important;
+    bottom: 5px !important;
+    margin-left: auto !important;
+}
+
+.deleteButton {
+    background-color: white !important;
+    position: relative;
+    content: "\f007";
+    font-family: 'Font Awesome\ 5 Free' !important;
+    bottom: 4px !important;
+    margin-left: auto !important;
+}
+
+.customButton {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    text-transform: none;
+    background-color: #632F94 !important;
+    outline: none !important;
+}
+
+.customDangerButton {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    text-transform: none;
+    background-color: red !important;
+    outline: none !important;
+}
+
+.btn {
+    outline: none !important;
+    border: none !important;
+}
+
+.btn:focus, .btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.close {
+    background-color: white;
+    border: none !important;
+}
