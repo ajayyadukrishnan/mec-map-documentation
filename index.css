@@ -489,5 +489,5 @@ tr:nth-child(odd) {
 }
 
 .hitCount{
-    width: 15vw;
+    width: 15vw !important;
 }
