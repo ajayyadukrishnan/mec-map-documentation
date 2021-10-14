@@ -487,3 +487,7 @@ tr:nth-child(odd) {
     background-color: white;
     border: none !important;
 }
+
+.hitCount{
+    width: 15vw;
+}
