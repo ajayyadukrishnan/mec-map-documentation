@@ -234,6 +234,7 @@ getOutputParametersOfFunction = function (obj, functionID) {
 
 function updatePDF() {
     document.getElementById("mapName").innerHTML = BODName
+    document.getElementById("mapAuthor").style.visibility = "visible"
 
     var mapDescriptionHeader = document.createElement("H4");
     var mapDescriptionHeaderText = document.createTextNode(BODName);
