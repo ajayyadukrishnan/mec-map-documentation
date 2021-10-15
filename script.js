@@ -1006,7 +1006,7 @@ function uploadFile() {
         mappingLayout.removeChild(mappingLayout.lastChild);
     }
     var mapContent = document.getElementById('mapContent');
-    while (mapContent.children.length > 5) {
+    while (mapContent.lastChild.id != "mappingLayout") {
         mapContent.removeChild(mapContent.lastChild);
     }
     for (let index = 0; index < 4; index++) {
