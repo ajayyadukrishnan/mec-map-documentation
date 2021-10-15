@@ -822,7 +822,7 @@ function updatePDF() {
                     const removeBulkCommentRegex = /\/\*(\*(?!\/)|[^*])*\*\//gm;
                     // functionCode = functionCode.replace(removeBulkCommentRegex, "").trim();
                     var functionPreSegment = document.createElement("pre");
-                    functionPreSegment.contenteditable = "true"
+                    functionPreSegment.contentEditable = "true"
 
                     var functionCodeSegment = document.createElement("code");
                     var functionCodeSegmentText = document.createTextNode(js_beautify(functionCode.trim()));
