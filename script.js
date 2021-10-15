@@ -1039,7 +1039,7 @@ function uploadFile() {
                 updatePDF()
                 document.title = BODName
                 document.getElementsByClassName("printerDiv")[0].style.display = ""
-                document.getElementById("mapAuthor").style.display = ""
+                document.getElementById("mapAuthor").style.visibility = "visible"
                 document.getElementById("todayDate").style.visibility = "visible"
                 document.getElementById("todayDate").innerHTML = moment().format('MMMM Do YYYY');
 
