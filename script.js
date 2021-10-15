@@ -830,7 +830,6 @@ function updatePDF() {
                     var functionCodeSegmentText = document.createTextNode(js_beautify(functionCode.trim()));
 
                     functionCodeSegment.className = "functionCode"
-                    functionCodeSegment.contentEditable = "true"
                     functionCodeSegment.appendChild(functionCodeSegmentText)
                     functionPreSegment.appendChild(functionCodeSegment)
                     functionContentsDiv.appendChild(functionPreSegment)
