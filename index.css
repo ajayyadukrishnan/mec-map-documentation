@@ -426,7 +426,7 @@ tr:nth-child(odd) {
 
 #printerButton {
     text-transform: none;
-    background-color: #632F94 !important;
+    /* background-color: #632F94 !important; */
 }
 
 #deleteLink{
