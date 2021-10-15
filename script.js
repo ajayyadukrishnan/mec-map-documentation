@@ -1078,16 +1078,16 @@ function uploadFile() {
     document.getElementById("customerLogo").style.visibility = "hidden"
     document.getElementById("todayDate").style.visibility = "hidden"
 
-    if (window.location.href == "ajayyadukrishnan.github.io") {
-        var image = document.createElement("img")
-        image.src = "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fajayyadukrishnan.github.io%2Fmec-map-documentation-webapp&count_bg=%23632F94&title_bg=%23BB84EF&icon=github.svg&icon_color=%23000000&title=Total+Page+Visits&edge_flat=false"
-        image.className = "hitCount"
-        document.getElementsByClassName("left")[0].appendChild(image)
-    } else {
-        var image = document.createElement("img")
-        image.src = "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fdoppio-group.github.io%2Fmec-map-documentation&count_bg=%23643590&title_bg=%23B887E7&icon=github.svg&icon_color=%23000000&title=Total+Page+Visits&edge_flat=false"
-        image.className = "hitCount"
-        document.getElementsByClassName("left")[0].appendChild(image)
-    }
+    // if (window.location.href == "ajayyadukrishnan.github.io") {
+    //     var image = document.createElement("img")
+    //     image.src = "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fajayyadukrishnan.github.io%2Fmec-map-documentation-webapp&count_bg=%23632F94&title_bg=%23BB84EF&icon=github.svg&icon_color=%23000000&title=Total+Page+Visits&edge_flat=false"
+    //     image.className = "hitCount"
+    //     document.getElementsByClassName("left")[0].appendChild(image)
+    // } else {
+    //     var image = document.createElement("img")
+    //     image.src = "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fdoppio-group.github.io%2Fmec-map-documentation&count_bg=%23643590&title_bg=%23B887E7&icon=github.svg&icon_color=%23000000&title=Total+Page+Visits&edge_flat=false"
+    //     image.className = "hitCount"
+    //     document.getElementsByClassName("left")[0].appendChild(image)
+    // }
 
 }());
