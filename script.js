@@ -815,7 +815,6 @@ function updatePDF() {
                     functionCodeHeader.appendChild(functionCodeHeaderText);
                     functionContentsDiv.appendChild(functionCodeHeader);
 
-
                     //* Get Function Code
                     const removeSingleCommentRegex = /((\/\/!.*?$)|\/\/.*?$)/gm;
                     functionCode = functionCode.replace(removeSingleCommentRegex, "").trim();
