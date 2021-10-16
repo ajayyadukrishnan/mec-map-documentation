@@ -28,6 +28,10 @@ html, body {
         visibility: hidden !important;
         display: none !important;
     }
+    .editCodeClass {
+        visibility: hidden !important;
+        display: none !important;
+    }
     .coverPage {
         display: flex;
         justify-content: center !important;
@@ -262,7 +266,12 @@ pre {
 }
 
 .functionCode {
-    color: red;
+    /* color: red; */
+}
+
+.functionHeader {
+    padding-top: 300pt;
+    margin-top: -300pt;
 }
 
 table {
@@ -411,7 +420,6 @@ tr:nth-child(odd) {
     flex-grow: 0;
 }
 
-
 .editDescriptionButton {
     float: right;
     /* left: 5vw; */
@@ -429,7 +437,7 @@ tr:nth-child(odd) {
     /* background-color: #632F94 !important; */
 }
 
-#deleteLink{
+#deleteLink {
     margin-left: auto !important;
 }
 
@@ -473,6 +481,15 @@ tr:nth-child(odd) {
     outline: none !important;
 }
 
+.customSuccessButton {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    text-transform: none;
+    background-color: green !important;
+    outline: none !important;
+}
+
 .btn {
     outline: none !important;
     border: none !important;
@@ -488,6 +505,6 @@ tr:nth-child(odd) {
     border: none !important;
 }
 
-.hitCount{
+.hitCount {
     width: 15vw !important;
 }

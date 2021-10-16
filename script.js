@@ -1,4 +1,6 @@
 var BODName = ""
+var origianlMapFileString = ""
+var uploadedFileName = ""
 var functionAndLoopSequence = []
 var loopMap = {}
 var functionMap = {}
@@ -10,6 +12,7 @@ var schemaInMap = {}
 var schemaOutMap = {}
 var linkMap = {}
 var headerColor = document.getElementById("colorpicker").value
+var originalEditedCode = ""
 
 function parseMapFile(mapFileString) {
     return new Promise((resolve, reject) => {
@@ -102,7 +105,7 @@ function parseMapFile(mapFileString) {
 
         var schemaOutList = []
         if (xmlDocument.getElementsByTagName("SchemaOut").length > 1) {
-            console.log(xmlDocument.getElementsByTagName("SchemaOut"))
+            // console.log(xmlDocument.getElementsByTagName("SchemaOut"))
             schemaOutList = xmlDocument.getElementsByTagName("SchemaOut")[1].children
             for (var i = 1; i < schemaOutList.length; i++) {
                 var variableName = schemaOutList[i].children[0].innerHTML
@@ -138,6 +141,25 @@ function parseMapFile(mapFileString) {
 
         resolve()
     })
+}
+
+function download(filename, text) {
+    var element = document.createElement('a');
+    // console.log(encodeURIComponent(text))
+    // element.setAttribute('href', 'data:text/xml;charset=UTF-16BE,' + encodeURIComponent(text));
+    var uint8array = new TextEncoder('utf-16', { NONSTANDARD_allowLegacyEncoding: true }).encode(text);
+    var blob = new Blob([uint8array], { type: "text/xml;charset=UTF-16BE" });
+    var url = URL.createObjectURL(blob);
+    element.setAttribute('href', url);
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+    $("#downloadModal").modal('toggle');
 }
 
 
@@ -412,17 +434,17 @@ function updatePDF() {
                     var variableToParameterLinks = linkMap["VP"]
                     if (variableToParameterLinks)
                         variableToParameterLinks = variableToParameterLinks.filter(arr => arr[1] in functionInputParameters)
-                    console.log(variableToParameterLinks)
+                    // console.log(variableToParameterLinks)
 
                     var constantToParameterLinks = linkMap["KP"]
                     if (constantToParameterLinks)
                         constantToParameterLinks = constantToParameterLinks.filter(arr => arr[1] in functionInputParameters)
-                    console.log(constantToParameterLinks)
+                    // console.log(constantToParameterLinks)
 
                     var schemaToParameterLinks = linkMap["MP"]
                     if (schemaToParameterLinks)
                         schemaToParameterLinks = schemaToParameterLinks.filter(arr => arr[1] in functionInputParameters)
-                    console.log(schemaToParameterLinks)
+                    // console.log(schemaToParameterLinks)
 
 
                     if (variableToParameterLinks.length > 0 || constantToParameterLinks.length > 0 || schemaToParameterLinks.length > 0) {
@@ -820,17 +842,40 @@ function updatePDF() {
                     functionCode = functionCode.replace(removeSingleCommentRegex, "").trim();
 
                     const removeBulkCommentRegex = /\/\*(\*(?!\/)|[^*])*\*\//gm;
-                    // functionCode = functionCode.replace(removeBulkCommentRegex, "").trim();
+                    functionCode = functionCode.replace(removeBulkCommentRegex, "").trim();
+
+                    var preDiv = document.createElement("div")
+                    preDiv.className = "preDiv"
+
+                    var editCodeLink = document.createElement("a")
+                    editCodeLink.className = "btn editCodeClass"
+                    editCodeLink.href = "#"
+                    editCodeLink.title = "Edit the function code"
+                    editCodeLink.setAttribute("data-bs-toggle", "tooltip")
+                    editCodeLink.setAttribute("data-bs-placement", "bottom")
+                    editCodeLink.style.float = "right"
+
+                    var editCodeIcon = document.createElement("i")
+                    editCodeIcon.className = "fas fa-edit editCodeButton"
+                    editCodeIcon.id = "editCode-" + elementID
+
+                    editCodeLink.appendChild(editCodeIcon)
+                    preDiv.appendChild(editCodeLink)
+
                     var functionPreSegment = document.createElement("pre");
-                    functionPreSegment.contentEditable = "true"
+                    functionPreSegment.id = "pre-" + elementID
+                    functionPreSegment.className = "preClass"
+                    // functionPreSegment.contentEditable = "true"
 
                     var functionCodeSegment = document.createElement("code");
                     var functionCodeSegmentText = document.createTextNode(js_beautify(functionCode.trim()));
 
                     functionCodeSegment.className = "functionCode"
+                    functionCodeSegment.id = "code-" + elementID
                     functionCodeSegment.appendChild(functionCodeSegmentText)
                     functionPreSegment.appendChild(functionCodeSegment)
-                    functionContentsDiv.appendChild(functionPreSegment)
+                    preDiv.appendChild(functionPreSegment)
+                    functionContentsDiv.appendChild(preDiv)
                 }
 
 
@@ -840,7 +885,7 @@ function updatePDF() {
                 functionContentsDiv.appendChild(mybr);
 
                 document.getElementById("mapContent").appendChild(functionContentsDiv);
-                $("#row-" + elementID).append('<div class="modificationDiv"><a class="btn" href="#" id ="editLink"><i class="fas fa-edit editButton" id="edit-' + elementID + '" data-bs-toggle="modal" data-bs-target="#functionModal"></i></a><a class="btn" href="#" id ="deleteLink"><i class="fas fa-trash-alt deleteButton" id="delete-' + elementID + '" data-bs-toggle="modal" data-bs-target="#confirm-delete"></i></a></div>')
+                $("#row-" + elementID).append('<div class="modificationDiv"><a class="btn" href="#" id ="editLink" data-bs-toggle="tooltip" data-bs-placement="bottom" title = "Edit the function\'s name and description" > <i class="fas fa-edit editButton" id="edit-' + elementID + '" functionType=' + functionType + ' data-bs-toggle="modal" data-bs-target="#functionModal"></i></a > <a class="btn" href="#" id="deleteLink" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete this function from the document"><i class="fas fa-trash-alt deleteButton" id="delete-' + elementID + '" data-bs-toggle="modal" data-bs-target="#confirm-delete"></i></a></div > ')
                 // $("#row-" + elementID).append('')
 
             }
@@ -908,40 +953,66 @@ function updatePDF() {
 
     }
 
-
-
-    // if (tempparameterToVariableLinks.length > 0) {
-    //     var outputableDataRow = document.createElement('tr');
-
-    //     var LocalParameterData = document.createElement('td');
-    //     var LocalParameterTextData = document.createTextNode(parameterDetails[0]);
-
-    //     var LocalParameterSourceData = document.createElement('td');
-
-    //     var LocalParameterSourceTextData = document.createTextNode(variablesMap[tempparameterToVariableLinks[0][1]][0]);
-
-    //     // console.log(LocalParameterData)
-    //     LocalParameterData.appendChild(LocalParameterTextData)
-    //     LocalParameterSourceData.appendChild(LocalParameterSourceTextData)
-
-    //     outputableDataRow.appendChild(LocalParameterData)
-    //     outputableDataRow.appendChild(LocalParameterSourceData)
-    //     outputTable.appendChild(outputableDataRow)
-    // }
-
     $(document).on("click", ".editButton", function () {
         var clickedID = $(this)[0].id;
+        // console.log($(this).attr("functionType"))
         $("#functionNameInput").val($("#" + (clickedID.split("-")[1]))[0].innerText);
-        console.log($("#" + ((clickedID.split("-")[1]) + "-desc")))
+        // console.log($("#" + ((clickedID.split("-")[1]) + "-desc")))
         $("#functionDescriptionInput").val($("#" + ((clickedID.split("-")[1]) + "-desc"))[0].innerText);
+        $("#saveEdit").attr("functionType", $(this).attr("functionType"))
         $("#saveEdit").attr("id", "saveEdit-" + clickedID.split("-")[1])
 
     });
 
+    $(document).on("click", ".editCodeButton", function () {
+        var saveClass = document.getElementsByClassName("saveCodeButton")
+        if (saveClass.length > 0) {
+            // console.log(saveClass[0].id.split("-")[1])
+            document.getElementById("code-" + saveClass[0].id.split("-")[1]).innerHTML = originalEditedCode
+            // saveClass[0].innerHTML = originalEditedCode
+            saveClass[0].classList.add("editCodeButton")
+            saveClass[0].classList.add("fa-edit")
+            saveClass[0].classList.remove("fa-save")
+            saveClass[0].classList.remove("saveCodeButton")
+        }
+
+        var clickedID = $(this)[0].id;
+        var functionID = clickedID.split("-")[1]
+
+        originalEditedCode = document.getElementById("code-" + functionID).innerText
+        $(this).removeClass("fa-edit")
+        $(this).addClass("fa-save")
+        $(this).removeClass("editCodeButton")
+        $(this).prop('title', 'Save the edited function code')
+        $(this).addClass("saveCodeButton")
+        // console.log(functionID);
+
+        originalEditedCode = document.getElementById("code-" + functionID).innerText
+        document.getElementById("pre-" + functionID).contentEditable = "true"
+        document.getElementById("pre-" + functionID).click()
+        document.getElementById("pre-" + functionID).focus()
+    });
+
+    $(document).on("click", ".saveCodeButton", function () {
+        var clickedID = $(this)[0].id;
+        var functionID = clickedID.split("-")[1]
+
+        originalEditedCode = document.getElementById("code-" + functionID).innerText
+
+        $(this).removeClass("fa-save")
+        $(this).addClass("fa-edit")
+        $(this).prop('title', 'Edit the function code')
+        $(this).removeClass("saveCodeButton")
+        $(this).addClass("editCodeButton")
+        // console.log(functionID);
+
+        document.getElementById("pre-" + functionID).contentEditable = "false"
+    });
+
     $(document).on("click", ".deleteButton", function () {
         var clickedID = $(this)[0].id;
-        console.log(clickedID)
-        console.log($("#" + (clickedID.split("-")[1]))[0].innerText)
+        // console.log(clickedID)
+        // console.log($("#" + (clickedID.split("-")[1]))[0].innerText)
         $("#deleteModalTitle")[0].innerHTML = "Delete " + $("#" + (clickedID.split("-")[1]))[0].innerText + "?"
         $("#deleteText")[0].innerHTML = "Are you sure you want to delete the element " + $("#" + (clickedID.split("-")[1]))[0].innerText + "?"
         $("#confirmDelete").attr("id", "confirmDelete-" + clickedID.split("-")[1])
@@ -949,19 +1020,46 @@ function updatePDF() {
 
     $(document).on("click", ".saveChangesButton", function () {
         var clickedID = $(this)[0].id;
-        console.log(clickedID)
+        var functionType = $(this).attr("functionType")
+        // console.log(clickedID)
         var functionID = clickedID.split("-")[1]
-        console.log($("#functionNameInput")[0].innerText)
         $("#" + functionID).text($("#functionNameInput").val())
         $("#" + (functionID + "-desc")).text($("#functionDescriptionInput").val())
         document.querySelectorAll("a[href='#" + functionID + "']")[0].innerHTML = $("#functionNameInput").val()
+
+        if (!functionType.startsWith("AV")) {
+            var tempxmlParser = new DOMParser()
+            var tempxmlDocument = tempxmlParser.parseFromString(origianlMapFileString, "text/xml");
+            // console.log(tempxmlDocument)
+
+            var nodeList = tempxmlDocument.querySelectorAll('[IDREF="' + functionID.trim() + '"]')
+            var index = Array.from(nodeList).findIndex(temp => temp.nodeName == "Language")
+
+            var functionCode = tempxmlDocument.querySelectorAll('[IDREF="' + functionID.trim() + '"]')[index].parentElement.innerHTML.trim()
+            // console.log(functionCode)
+            const regex = /\/\/!.*?$/gm;
+            functionCode = functionCode.replace(regex, "");
+            functionCode = functionCode.substring(functionCode.indexOf("<![CDATA["))
+            functionCode = functionCode.substring(9, functionCode.length - 3)
+            // console.log(functionCode)
+
+            functionCode = "//!" + $("#functionDescriptionInput").val() + "\n" + functionCode
+
+            tempxmlDocument.querySelectorAll('[IDREF="' + functionID.trim() + '"]')[index].parentElement.innerHTML = '<Language IDREF="' + functionID.trim() + '">Java</Language>\n<![CDATA[' + functionCode + ']]>'
+            // console.log(tempxmlDocument)
+
+            origianlMapFileString = new XMLSerializer().serializeToString(tempxmlDocument)
+        }
+
+        // console.log(origianlMapFileString)
+
         $("#" + clickedID).attr("id", "saveEdit")
         $("#functionModal").modal('toggle');
     })
 
     $(document).on("click", ".confirmDeleteButton", function () {
         var clickedID = $(this)[0].id;
-        console.log(clickedID)
+        // console.log(clickedID)
         var functionID = clickedID.split("-")[1]
         document.getElementById("functionDiv-" + functionID).remove()
         document.querySelectorAll("a[href='#" + functionID + "']")[0].remove()
@@ -973,7 +1071,22 @@ function updatePDF() {
         // $(this).find('.hiddenInput').toggle();
         $(this).animate({ bottom: '36', width: '15vw' }, 300);
     });
+
 }
+
+document.getElementById("downloadButtonLink").addEventListener("click", function () {
+    // Generate download of hello.txt file with some content
+    $("#downloadModal").modal('toggle');
+    // download(filename, text);
+}, false);
+
+document.getElementById("confirmDownload").addEventListener("click", function () {
+    // Generate download of hello.txt file with some content
+    var text = origianlMapFileString;
+    var filename = uploadedFileName;
+
+    download(filename, text);
+}, false);
 
 
 async function loadFile(file) {
@@ -1016,6 +1129,8 @@ function uploadFile() {
     document.getElementById("todayDate").innerHTML = "";
     document.getElementById("mapName").innerHTML = "";
 
+    originalEditedCode = "";
+
 
     const selectedFile = document.getElementById('fileInput').files
     var authorName = document.getElementById("authorInput").value
@@ -1023,19 +1138,21 @@ function uploadFile() {
     const logoFile = document.getElementById('logoInput').files
     const customerLogoFile = document.getElementById('customerLogoInput').files
 
-    console.log(logoFile, customerLogoFile)
+    // console.log(logoFile, customerLogoFile)
 
     if (selectedFile.length > 0 && authorName.trim() != "") {
         var myFile = selectedFile[0];
         const filePath = URL.createObjectURL(myFile);
 
+        uploadedFileName = myFile.name
         loadFile(myFile).then(mapFileString => {
             //    console.log(result)
+            origianlMapFileString = mapFileString
 
             parseMapFile(mapFileString).then(result => {
                 updatePDF()
                 document.title = BODName
-                document.getElementsByClassName("printerDiv")[0].style.display = ""
+                document.getElementsByClassName("printerDiv")[0].style.visibility = "visible"
                 document.getElementById("mapAuthor").style.visibility = "visible"
                 document.getElementById("todayDate").style.visibility = "visible"
                 document.getElementById("todayDate").innerHTML = moment().format('MMMM Do YYYY');
@@ -1054,7 +1171,7 @@ function uploadFile() {
             console.log(error)
         })
     } else {
-        console.log($("#errorModal"))
+        // console.log($("#errorModal"))
         $("#errorModal").modal('toggle');
     }
 
@@ -1072,11 +1189,13 @@ function uploadFile() {
     const colorInput = document.getElementById("colorpicker")
     colorInput.addEventListener("input", colorUpdate)
 
-    document.getElementsByClassName("printerDiv")[0].style.display = "none"
+    document.getElementsByClassName("printerDiv")[0].style.visibility = "hidden"
 
     document.getElementById("logo").style.visibility = "hidden"
     document.getElementById("customerLogo").style.visibility = "hidden"
     document.getElementById("todayDate").style.visibility = "hidden"
+
+    // $("[data-toggle = 'tooltip']").tooltip();
 
     // if (window.location.href == "ajayyadukrishnan.github.io") {
     //     var image = document.createElement("img")
