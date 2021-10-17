@@ -1024,6 +1024,7 @@ function updatePDF() {
 
     $(document).on("click", ".saveChangesButton", function () {
         var clickedID = $(this)[0].id;
+        if (!clickedID.contains("-")) return
         var functionType = $(this).attr("functionType")
         console.log(clickedID)
         var functionID = clickedID.split("-")[1]
