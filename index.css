@@ -265,13 +265,20 @@ pre {
     text-align: left;
 }
 
-.functionCode {
-    /* color: red; */
-}
-
 .functionHeader {
     padding-top: 300pt;
     margin-top: -300pt;
+}
+
+.checkBoxDiv {
+    padding-top: 1vw;
+    padding-left: 1vw;
+}
+
+#commentCheckbox:checked {
+    color: #632F94;
+    background-color: #632F94;
+    border-color: #632F94;
 }
 
 table {
@@ -461,6 +468,21 @@ tr:nth-child(odd) {
     font-family: 'Font Awesome\ 5 Free' !important;
     bottom: 4px !important;
     margin-left: auto !important;
+}
+
+.githubButton {
+    outline: none !important;
+    width: fit-content;
+    box-shadow: none !important;
+    border: none !important;
+    text-transform: none !important;
+    text-decoration: none !important;
+    color: white !important;
+}
+
+.bi-github {
+    padding-bottom: 2px;
+    width: 16px;
 }
 
 .customButton {

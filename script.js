@@ -13,6 +13,7 @@ var schemaOutMap = {}
 var linkMap = {}
 var headerColor = document.getElementById("colorpicker").value
 var originalEditedCode = ""
+removeCommentedCode = false
 
 function parseMapFile(mapFileString) {
     return new Promise((resolve, reject) => {
@@ -838,11 +839,14 @@ function updatePDF() {
                     functionContentsDiv.appendChild(functionCodeHeader);
 
                     //* Get Function Code
-                    const removeSingleCommentRegex = /((\/\/!.*?$)|\/\/.*?$)/gm;
-                    functionCode = functionCode.replace(removeSingleCommentRegex, "").trim();
 
-                    const removeBulkCommentRegex = /\/\*(\*(?!\/)|[^*])*\*\//gm;
-                    functionCode = functionCode.replace(removeBulkCommentRegex, "").trim();
+                    if (removeCommentedCode) {
+                        const removeSingleCommentRegex = /((\/\/!.*?$)|\/\/.*?$)/gm;
+                        functionCode = functionCode.replace(removeSingleCommentRegex, "").trim();
+
+                        const removeBulkCommentRegex = /\/\*(\*(?!\/)|[^*])*\*\//gm;
+                        functionCode = functionCode.replace(removeBulkCommentRegex, "").trim();
+                    }
 
                     var preDiv = document.createElement("div")
                     preDiv.className = "preDiv"
@@ -1021,7 +1025,7 @@ function updatePDF() {
     $(document).on("click", ".saveChangesButton", function () {
         var clickedID = $(this)[0].id;
         var functionType = $(this).attr("functionType")
-        // console.log(clickedID)
+        console.log(clickedID)
         var functionID = clickedID.split("-")[1]
         $("#" + functionID).text($("#functionNameInput").val())
         $("#" + (functionID + "-desc")).text($("#functionDescriptionInput").val())
@@ -1148,7 +1152,7 @@ function uploadFile() {
         loadFile(myFile).then(mapFileString => {
             //    console.log(result)
             origianlMapFileString = mapFileString
-
+            removeCommentedCode = document.getElementById("commentCheckbox").checked
             parseMapFile(mapFileString).then(result => {
                 updatePDF()
                 document.title = BODName
