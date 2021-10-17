@@ -160,7 +160,7 @@ function download(filename, text) {
     element.click();
 
     document.body.removeChild(element);
-    $("#downloadModal").modal('toggle');
+    $("#downloadedModal").modal('toggle');
 }
 
 
@@ -989,7 +989,6 @@ function updatePDF() {
         $(this).removeClass("editCodeButton")
         $(this).prop('title', 'Save the edited function code')
         $(this).addClass("saveCodeButton")
-        // console.log(functionID);
 
         originalEditedCode = document.getElementById("code-" + functionID).innerText
         document.getElementById("pre-" + functionID).contentEditable = "true"
