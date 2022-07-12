@@ -2,10 +2,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato');
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script');
 @import url('https://fonts.googleapis.com/css2?family=Birthstone');
+@import url('https://fonts.googleapis.com/css2?family=Poppins');
 /* @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css"; */
 
 html, body {
-    font-family: 'Josefin Sans', sans-serif !important;
+    /* font-family: 'Poppins', sans-serif !important;
+     */
+    font-family: 'Poppins', sans-serif !important;
     margin: 0 !important;
     padding-left: 1vw;
     padding-right: 1vw;
@@ -19,40 +22,49 @@ html, body {
     * {
         overflow: visible !important;
     }
+
     @page {
         margin: 0;
         margin-top: 5vh;
         margin-bottom: 5vh;
     }
+
     .printerDiv {
         visibility: hidden !important;
         display: none !important;
     }
+
     .editCodeClass {
         visibility: hidden !important;
         display: none !important;
     }
+
     .coverPage {
         display: flex;
         justify-content: center !important;
         align-items: center !important;
         height: 100%;
     }
+
     #editLink {
         visibility: hidden !important;
         display: none !important;
     }
+
     #deleteLink {
         visibility: hidden !important;
         display: none !important;
     }
+
     .split {
         position: relative !important;
     }
+
     .left {
         visibility: hidden !important;
         display: none !important;
     }
+
     .right {
         position: relative !important;
         width: 100% !important;
@@ -62,22 +74,26 @@ html, body {
         transform: translate(-50%, 0%);
         overflow-y: auto;
     }
+
     .mapPDF {
         padding-left: 5vw;
         padding-right: 5vw;
         padding-top: 10vh;
         padding-bottom: 10vh;
     }
+
     .mapName {
         text-align: center !important;
         max-width: 80% !important;
         word-wrap: break-word !important;
     }
+
     .pagebreak {
         clear: both !important;
         display: block !important;
         page-break-after: always !important;
     }
+
     table {
         table-layout: fixed !important;
         margin-right: 10vw !important;
@@ -102,6 +118,7 @@ html, body {
         text-align: left !important;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.1) !important;
     }
+
     td {
         /* white-space: pre-wrap; */
         /* css-3 */
@@ -113,9 +130,11 @@ html, body {
         /* Opera 7 */
         word-wrap: break-word !important;
     }
+
     tr:nth-child(odd) {
         background-color: grey !important;
     }
+
     #mapAuthor {
         font-size: 1.5em;
         word-break: break-all;
@@ -157,7 +176,7 @@ html, body {
 }
 
 .title {
-    font-family: 'Josefin Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     color: #632F94;
 }
 
@@ -187,7 +206,7 @@ html, body {
 
 .input-field {
     color: #632F94 !important;
-    font-family: 'Josefin Sans', sans-serif !important;
+    font-family: 'Poppins', sans-serif !important;
 }
 
 .input-field input[type=text]:focus+label {
