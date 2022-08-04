@@ -219,6 +219,15 @@ function colorUpdate(event) {
         customBackgroundColorElements.item(i).style.color = invertedColor
         // }
     }
+
+    // $("table tr:even").addClass("evenClassName");
+    // console.log($("table tr:even"))
+    // $("table tr:odd").css({ 'background-color': shadeBlendConvert(0.9, headerColor) })
+    $("table").each(function () {
+        // console.log(this)
+        $(this).find("tr:odd").css({ 'background-color': shadeBlendConvert(0.9, headerColor) })
+    });
+    // console.log(shadeBlendConvert(0.25, headerColor))
 }
 
 function updateBackgroundColor() {
@@ -259,6 +268,9 @@ function updatePDF() {
     document.getElementById("mapName").innerHTML = BODName
     document.getElementById("mapAuthor").style.visibility = "visible"
 
+    document.getElementById("documentationTitle").style.visibility = "visible";
+    document.getElementById("horizontalLine").style.visibility = "visible";
+
     var mapDescriptionHeader = document.createElement("H4");
     var mapDescriptionHeaderText = document.createTextNode(BODName);
     mapDescriptionHeader.id = "mapDescriptionHeader"
@@ -296,6 +308,11 @@ function updatePDF() {
     var mybr = document.createElement('br');
     document.getElementById("mappingLayout").appendChild(mybr);
     var padding = 0
+
+    var currentParent = document.createElement("ul");
+    currentParent.className = "tree";
+    var parentList = [currentParent];
+
     for (var i = 0; i < functionAndLoopSequence.length; i++) {
         var elementID = functionAndLoopSequence[i].split(",")[0].trim()
         var elementType = functionAndLoopSequence[i].split(",")[1].trim()
@@ -310,8 +327,18 @@ function updatePDF() {
             a.appendChild(link);
             a.title = functionMap[elementID][0];
             a.href = "#" + elementID;
-            a.style.cssText = "padding-left:" + padding + "vw";
-            mappingLayoutDiv.appendChild(a);
+            // a.style.cssText = "padding-left:" + padding + "vw";
+            // mappingLayoutDiv.appendChild(a);
+
+            // console.log(functionMap[elementID][0]);
+
+            var li = document.createElement("li");
+            var span = document.createElement("span");
+            span.appendChild(a);
+            li.appendChild(span);
+
+            currentParent.appendChild(li);
+
         } else if (elementID in loopMap) {
             if (elementType == "LB") {
                 // var a = document.createElement('a');
@@ -330,14 +357,51 @@ function updatePDF() {
                 a.appendChild(link);
                 a.title = loopMap[elementID][0];
                 a.href = "";
-                a.style.cssText = "padding-left:" + padding + "vw";
-                mappingLayoutDiv.appendChild(a);
+                // a.style.cssText = "padding-left:" + padding + "vw";
+                // mappingLayoutDiv.appendChild(a);
                 padding = padding + 3;
+                // console.log(loopMap[elementID][0]);
+
+
+                // var ul = document.createElement("ul");
+                // ul.appendChild(a);
+
+                // currentParent.appendChild(ul);
+
+                // parentList.push(ul);
+                // currentParent = ul;
+                var loopDiv = document.createElement("div");
+                loopDiv.className = "loopElement";
+                // loopDiv.style.float = "left"
+                var collapseIcon = document.createElement("i");
+                collapseIcon.style.width = "20px";
+                collapseIcon.style.paddingLeft = "8px";
+                collapseIcon.className = "fas fa-minus fa-1x collapseIcon";
+
+                loopDiv.appendChild(collapseIcon);
+                loopDiv.appendChild(a);
+
+
+                var li = document.createElement("li");
+                li.appendChild(loopDiv);
+                currentParent.appendChild(li);
+
+                var ul = document.createElement("ul");
+                loopDiv.appendChild(ul);
+                parentList.push(ul);
+                currentParent = ul;
+
             } else if (elementType == "LE") {
                 padding = padding - 3;
+                parentList.pop();
+                currentParent = parentList[parentList.length - 1];
             }
         }
     }
+
+    console.log(currentParent);
+    document.getElementById("mappingLayout").appendChild(currentParent);
+
     var pageBreak = document.createElement("div")
     pageBreak.className = "pagebreak"
     document.getElementById("mapContent").appendChild(mappingLayoutDiv)
@@ -1073,7 +1137,7 @@ function updatePDF() {
         // console.log(clickedID)
         var functionID = clickedID.split("-")[1]
         document.getElementById("functionDiv-" + functionID).remove()
-        document.querySelectorAll("a[href='#" + functionID + "']")[0].remove()
+        document.querySelectorAll("a[href='#" + functionID + "']")[0].parentElement.parentElement.remove()
         $("#" + clickedID).attr("id", "confirmDelete")
         // $("#confirm-delete").modal('toggle');
     })
@@ -1082,6 +1146,9 @@ function updatePDF() {
         // $(this).find('.hiddenInput').toggle();
         $(this).animate({ bottom: '36', width: '15vw' }, 300);
     });
+
+
+    setEventListenersToLoops();
 
 }
 
@@ -1147,6 +1214,8 @@ function uploadFile() {
 
     document.getElementById("todayDate").innerHTML = "";
     document.getElementById("mapName").innerHTML = "";
+    document.getElementById("documentationTitle").style.visibility = "hidden";
+    document.getElementById("horizontalLine").style.visibility = "hidden";
 
     originalEditedCode = "";
 
@@ -1176,15 +1245,70 @@ function uploadFile() {
                 document.getElementById("todayDate").style.visibility = "visible"
                 document.getElementById("todayDate").innerHTML = moment().format('MMMM Do YYYY');
 
+                var watermarkDiv = document.getElementById("watermarkDiv");
+                watermarkDiv.innerHTML = "";
+
+                var watermarkAuthor = document.createElement("span");
+                // watermarkAuthor.innerText = "Ajay Yadukrishnan";
+                watermarkAuthor.id = "watermarkAuthor";
+                watermarkDiv.appendChild(watermarkAuthor);
+
                 if (logoFile.length > 0) {
                     document.getElementById("logo").src = URL.createObjectURL(logoFile[0])
                     document.getElementById("logo").style.visibility = "visible"
+                    var src = URL.createObjectURL(logoFile[0]);
+                    console.log(src)
+                    document.body.style.background = 'url(' + src + ') repeat 0 0';
+
+                    var img = document.createElement("img");
+                    img.src = src;
+
+                    var watermarkDiv = document.getElementById("watermarkDiv");
+
+                    watermarkDiv.appendChild(img);
+
+                    document.getElementsByTagName("body")[0].appendChild(watermarkDiv);
+
+                    // div.innerHTML = "Ajay Yadukrishnan"
+                    // div.style.color = "#bbb";
+                    // div.style.fontSize = "100px";
+                    // div.style.position = "fixed";
+                    // div.style.top = "50%";
+                    // div.style.left = "60%";
+                    // div.style.zIndex = "99";
+                    // div.style.opacity = "0.1"
+
+                    // div.style.transform = "rotate(-45deg)"; //standard
+                    // div.style.msTransform = "rotate(-45deg)"; //IE
+                    // div.style.mozTransform = "rotate(-45deg)"; //Firefox
+                    // div.style.webkitTransform = "rotate(-45deg)"; //Chrome
+                    // div.style.oTransform = "rotate(-45deg)"; //Opera
+                    img.id = "watermarkImage";
+                    // img.style.color = "#bbb";
+                    // img.style.fontSize = "100px";
+                    // img.style.position = "fixed";
+                    // img.style.top = "50%";
+                    // img.style.left = "60%";
+                    // img.style.zIndex = "98";
+                    // img.style.opacity = "0.05"
+
+                    // img.style.transform = "rotate(-45deg)"; //standard
+                    // img.style.msTransform = "rotate(-45deg)"; //IE
+                    // img.style.mozTransform = "rotate(-45deg)"; //Firefox
+                    // img.style.webkitTransform = "rotate(-45deg)"; //Chrome
+                    // img.style.oTransform = "rotate(-45deg)"; //Opera
                 }
 
                 if (customerLogoFile.length > 0) {
                     document.getElementById("customerLogo").src = URL.createObjectURL(customerLogoFile[0])
                     document.getElementById("customerLogo").style.visibility = "visible"
                 }
+
+                // $("table tr:odd").css({ 'background-color': shadeBlendConvert(0.9, headerColor) })
+                $("table").each(function () {
+                    // console.log(this)
+                    $(this).find("tr:odd").css({ 'background-color': shadeBlendConvert(0.9, headerColor) })
+                });
             })
         }).catch(error => {
             console.log(error)
@@ -1196,9 +1320,100 @@ function uploadFile() {
 
 }
 
+function setEventListenersToLoops() {
+    var loopElements = document.getElementsByClassName("loopElement")
+    for (let index = 0; index < loopElements.length; index++) {
+        // console.log(loopElements[index])
+        // loopElements[index].addEventListener("click", function (e) {
+        //     console.log(e.currentTarget.children);
+        //     // var children = $(this).parent('li.parent_li').find(' > ul > li');
+        //     var child = e.currentTarget.children[0];
+        //     // if (children.is(":visible")) {
+        //     //     children.hide('fast');
+        //     //     // $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+        //     // } else {
+        //     //     children.show('fast');
+        //     //     // $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+        //     // }
+        //     console.log(child.style.visibility);
+        //     console.log(child.style.display);
+        //     console.log(child);
+
+        //     if (child.style.display === "" || child.style.display === undefined || child.style.display === "block") {
+        //         child.style.display = "none";
+        //     } else {
+        //         child.style.display = "block";
+        //     }
+        //     e.stopPropagation();
+        // });
+
+
+    }
+
+    $(".loopElement").children(".mappingElement").each(function () {
+        var loopElement = this;
+        console.log(loopElement);
+
+        loopElement.addEventListener("click", function (e) {
+            // console.log(e.currentTarget.children);
+            // console.log($(this).find("ul")[0])
+            // var children = $(this).parent('li.parent_li').find(' > ul > li');
+            // var child = e.currentTarget.children[0];
+            var parent = $(this).parent()
+            var icon = parent.find("i")[0];
+
+            var child = parent.find("ul")[0];
+            // console.log(child.style.visibility);
+            // console.log(child.style.display);
+            // console.log(child);
+
+            if (child.style.display === "" || child.style.display === undefined || child.style.display === "block") {
+                child.style.display = "none";
+                // icon.className = "fas fa-plus fa-1x collapseIcon";
+                console.log(icon.classList);
+                icon.classList.remove("fa-minus")
+                icon.classList.add("fa-plus");
+            } else {
+                child.style.display = "block";
+                // icon.className = "fas fa-minus fa-1x collapseIcon";
+                console.log(icon.classList);
+                icon.classList.remove("fa-plus");
+                icon.classList.add("fa-minus");
+            }
+            e.stopPropagation();
+        });
+    });
+}
+
+
+
+function shadeBlendConvert(p, from, to) {
+    if (typeof (p) != "number" || p < -1 || p > 1 || typeof (from) != "string" || (from[0] != 'r' && from[0] != '#') || (to && typeof (to) != "string")) return null; //ErrorCheck
+    if (!this.sbcRip) this.sbcRip = (d) => {
+        let l = d.length, RGB = {};
+        if (l > 9) {
+            d = d.split(",");
+            if (d.length < 3 || d.length > 4) return null;//ErrorCheck
+            RGB[0] = i(d[0].split("(")[1]), RGB[1] = i(d[1]), RGB[2] = i(d[2]), RGB[3] = d[3] ? parseFloat(d[3]) : -1;
+        } else {
+            if (l == 8 || l == 6 || l < 4) return null; //ErrorCheck
+            if (l < 6) d = "#" + d[1] + d[1] + d[2] + d[2] + d[3] + d[3] + (l > 4 ? d[4] + "" + d[4] : ""); //3 or 4 digit
+            d = i(d.slice(1), 16), RGB[0] = d >> 16 & 255, RGB[1] = d >> 8 & 255, RGB[2] = d & 255, RGB[3] = -1;
+            if (l == 9 || l == 5) RGB[3] = r((RGB[2] / 255) * 10000) / 10000, RGB[2] = RGB[1], RGB[1] = RGB[0], RGB[0] = d >> 24 & 255;
+        } return RGB;
+    }
+    var i = parseInt, r = Math.round, h = from.length > 9, h = typeof (to) == "string" ? to.length > 9 ? true : to == "c" ? !h : false : h, b = p < 0, p = b ? p * -1 : p, to = to && to != "c" ? to : b ? "#000000" : "#FFFFFF", f = this.sbcRip(from), t = this.sbcRip(to);
+    if (!f || !t) return null; //ErrorCheck
+    if (h) return "rgb" + (f[3] > -1 || t[3] > -1 ? "a(" : "(") + r((t[0] - f[0]) * p + f[0]) + "," + r((t[1] - f[1]) * p + f[1]) + "," + r((t[2] - f[2]) * p + f[2]) + (f[3] < 0 && t[3] < 0 ? ")" : "," + (f[3] > -1 && t[3] > -1 ? r(((t[3] - f[3]) * p + f[3]) * 10000) / 10000 : t[3] < 0 ? f[3] : t[3]) + ")");
+    else return "#" + (0x100000000 + r((t[0] - f[0]) * p + f[0]) * 0x1000000 + r((t[1] - f[1]) * p + f[1]) * 0x10000 + r((t[2] - f[2]) * p + f[2]) * 0x100 + (f[3] > -1 && t[3] > -1 ? r(((t[3] - f[3]) * p + f[3]) * 255) : t[3] > -1 ? r(t[3] * 255) : f[3] > -1 ? r(f[3] * 255) : 255)).toString(16).slice(1, f[3] > -1 || t[3] > -1 ? undefined : -2);
+}
+
 (function () {
     document.getElementById("mapName").className = "bodName customColor"
     document.getElementById("mapName").style.color = headerColor
+
+    document.getElementById("documentationTitle").style.visibility = "hidden";
+    document.getElementById("horizontalLine").style.visibility = "hidden";
 
     document.getElementById("mapAuthor").style.visibility = "hidden"
 
@@ -1214,6 +1429,8 @@ function uploadFile() {
     document.getElementById("customerLogo").style.visibility = "hidden"
     document.getElementById("todayDate").style.visibility = "hidden"
 
+    document.getElementById("watermarkDiv").innerHTML = ""
+
     // $("[data-toggle = 'tooltip']").tooltip();
 
     // if (window.location.href == "ajayyadukrishnan.github.io") {
@@ -1227,5 +1444,11 @@ function uploadFile() {
     //     image.className = "hitCount"
     //     document.getElementsByClassName("left")[0].appendChild(image)
     // }
+
+    var loopElements = document.getElementsByClassName("loopElement")
+    for (let index = 0; index < loopElements.length; index++) {
+        // console.log(loopElements[index])
+        loopElements[index].removeEventListener("click", () => { })
+    }
 
 }());

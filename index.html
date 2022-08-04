@@ -99,7 +99,8 @@
                 </div>
                 <div class="modal-body">
                     <span>The downloaded file is in UTF-8 format. Please change the encoding to UTF-16 BE BOM encoding
-                        using <a href="https://notepad-plus-plus.org/downloads/" target="_blank">Notepad++</a> before opening it in the
+                        using <a href="https://notepad-plus-plus.org/downloads/" target="_blank">Notepad++</a> before
+                        opening it in the
                         MEC Mapper</span>
                 </div>
                 <div class="modal-footer">
@@ -219,20 +220,26 @@
         </div>
         <!-- <div class="printerDiv"><button class="btn btn-1 btn-1a printerButton" onclick="window.print()">Print this
                 page</button></div> -->
-        <br /><br /><br /><br />
+        <br />
+        <br />
+        <!-- <br /><br /> -->
         <div class="mapPDF" id="mapPDF">
             <div class="coverPage">
                 <center>
-                    <img id="logo" src="#" style="width: 50%;" />
+                    <img id="logo" src="#" style="width: 50%; height: 6%" />
+                    <br /><br /><br /><br />
+                    <h1 class="documentationTitle" id="documentationTitle" style="visibility: hidden;">MEC Map
+                        Documentation</h1>
+                    <hr class="horizontalLine" id="horizontalLine" style="visibility: hidden;" />
                     <br /><br />
-                    <h1 class="mapName customColor mb-3" id="mapName">
-                        </h5>
-                        <img id="customerLogo" src="#" style="width: 50%;" />
-                        <br /><br /><br /><br />
-                        <span id="todayDate"></span>
-                        <br /><br />
-                        <p class="mapAuthor mb-4" id="mapAuthor"></p>
-                        <br /><br />
+                    <h1 class="mapName customColor mb-3" id="mapName"></h1>
+                    </h5>
+                    <img id="customerLogo" src="#" style="width: 50%; height: 6%" />
+                    <br /><br /><br /><br />
+                    <span id="todayDate"></span>
+                    <br /><br />
+                    <p class="mapAuthor mb-4" id="mapAuthor"></p>
+                    <br /><br />
                 </center>
             </div>
             <div class="pagebreak"></div>
@@ -242,6 +249,7 @@
 
         </div>
     </div>
+    <div id="watermarkDiv"></div>
 
 
 

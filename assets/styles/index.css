@@ -27,6 +27,26 @@ html, body {
         margin: 0;
         margin-top: 5vh;
         margin-bottom: 5vh;
+        size: 7in 9.25in;
+    }
+
+    body:before {
+        content: '\0041\006a\0061\0079\0020\0059\0061\0064\0075\006b\0072\0069\0073\0068\006e\0061\006e';
+        white-space: pre;
+        font-family: 'Poppins', sans-serif !important;
+        position: fixed !important;
+        top: 79% !important;
+        left: 57% !important;
+        z-index: 99;
+    
+        color: #94a0b4;
+        font-size: 24px;
+        font-weight: 500px;
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        opacity: 0.1 !important;
+        /* transform: rotate(-45deg); */
     }
 
     .printerDiv {
@@ -40,10 +60,12 @@ html, body {
     }
 
     .coverPage {
-        display: flex;
+        display: block;
         justify-content: center !important;
         align-items: center !important;
         height: 100%;
+        max-height: 100%;
+        /* max-height: 29.7cm; */
     }
 
     #editLink {
@@ -76,16 +98,24 @@ html, body {
     }
 
     .mapPDF {
-        padding-left: 5vw;
-        padding-right: 5vw;
-        padding-top: 10vh;
-        padding-bottom: 10vh;
+        padding-left: 2vw;
+        padding-right: 2vw;
+        padding-top: 1vh;
+        padding-bottom: 1vh;
     }
 
-    .mapName {
+    #documentationTitle {
         text-align: center !important;
-        max-width: 80% !important;
+        /* max-width: 80% !important; */
         word-wrap: break-word !important;
+        font-size: 1.2rem;
+    }
+
+    #mapName {
+        text-align: center !important;
+        /* max-width: 80% !important; */
+        word-wrap: break-word !important;
+        font-size: 1.25rem;
     }
 
     .pagebreak {
@@ -131,14 +161,102 @@ html, body {
         word-wrap: break-word !important;
     }
 
-    tr:nth-child(odd) {
+    /* tr:nth-child(odd) {
         background-color: grey !important;
-    }
+    } */
 
     #mapAuthor {
         font-size: 1.5em;
         word-break: break-all;
     }
+
+    #logo, #customerLogo {
+        max-width: 60%;
+        max-height: 10%;
+    }
+
+    ul {
+        display: block !important;
+    }
+
+    .collapseIcon {
+        display: none !important;
+    }
+
+    /* body:after {
+        content: '';
+        white-space: pre;
+        background: image();
+        font-family: 'Poppins', sans-serif !important;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 20%;
+        right: 0;
+        z-index: 99;
+
+        color: #94a0b4;
+        font-size: 48px;
+        font-weight: 500px;
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        opacity: 0.1;
+        transform: rotate(-45deg);
+    } */
+
+    /* body:before {
+        content: 'Ajay Yadukrishnan';
+        white-space: pre;
+        font-family: 'Poppins', sans-serif !important;
+        position: fixed;
+        top: 30%;
+        bottom: 0;
+        left: 40%;
+        right: 0;
+        z-index: 99;
+
+        color: #94a0b4;
+        font-size: 36px;
+        font-weight: 500px;
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        opacity: 0.1;
+        transform: rotate(-45deg);
+    } */
+
+    #watermarkImage {
+        font-size: 24px;
+        position: fixed !important;
+        top: 65% !important;
+        left: 5% !important;
+        z-index: 1;
+        opacity: 0.05 !important;
+        pointer-events:none;
+        /* transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        -moz-transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        -o-transform: rotate(-45deg); */
+    }
+    
+    #watermarkAuthor {
+        color: #bbb;
+        font-size: 24px;
+        position: fixed !important;
+        top: 63%;
+        left: 78%;
+        z-index: 1;
+        opacity: 0.2;
+        pointer-events:none;
+        /* transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        -moz-transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        -o-transform: rotate(-45deg); */
+    }
+
 }
 
 .split {
@@ -233,9 +351,21 @@ html, body {
     box-shadow: 0 1px 0 0 #632F94 !important;
 }
 
+.mappingElement{
+    cursor: pointer;
+    position: absolute;
+    z-index: 100 !important;
+}
+
 .mappingElement::after {
-    content: "\a\a";
+    content: "\a";
     white-space: pre;
+}
+
+.loopElement {
+    /* cursor: pointer; */
+    width: fit-content;
+    z-index: 99 !important;
 }
 
 .colorPickerDiv {
@@ -364,9 +494,13 @@ td {
     word-wrap: break-word;
 }
 
-tr:nth-child(odd) {
+/* tr:nth-child(odd) {
     background-color: lightblue !important;
-}
+} */
+
+/* tr:nth-child(odd) {
+    background-color: grey !important;
+} */
 
 .printerDiv {
     float: right;
@@ -439,6 +573,25 @@ tr:nth-child(odd) {
 #mapAuthor {
     font-size: 1.5em;
     word-break: break-all;
+}
+
+#logo, #customerLogo {
+    max-width: 60%;
+    max-height: 10%;
+}
+
+#documentationTitle {
+    text-align: center !important;
+    /* max-width: 80% !important; */
+    word-wrap: break-word !important;
+    font-size: 1.2rem;
+}
+
+#mapName {
+    text-align: center !important;
+    /* max-width: 80% !important; */
+    word-wrap: break-word !important;
+    font-size: 1.25rem;
 }
 
 .parent {
@@ -548,4 +701,176 @@ tr:nth-child(odd) {
 
 .hitCount {
     width: 15vw !important;
+}
+
+.horizontalLine {
+    background-color: black;
+    border: 0 none;
+    color: black;
+    height: 10px;
+}
+
+
+
+.tree {
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    background-color: #fbfbfb;
+    border: 1px solid #999;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05)
+}
+
+.tree li {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px 5px 0 5px;
+    position: relative
+}
+
+.tree li::before,
+.tree li::after {
+    content: '';
+    left: -10px;
+    position: absolute;
+    right: auto
+}
+
+.tree li::before {
+    /* padding-left: 10px; */
+    border-left: 1px solid #999;
+    bottom: 50px;
+    height: 100%;
+    top: 0;
+}
+
+.tree li::after {
+    box-sizing: border-box;
+    border-left: 1px solid #999;
+    border-bottom: 1px solid #999;
+    border-bottom-left-radius: 10px;
+    height: 34px;
+    top: 0px;
+    width: 20px;
+}
+
+.tree li span {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    /* border: 1px solid #999; */
+    border-radius: 5px;
+    display: inline-block;
+    padding: 10px 6px;
+    text-decoration: none;
+}
+
+.tree li.parent_li>span {
+    cursor: pointer;
+}
+
+.tree>ul>li::before,
+.tree>ul>li::after {
+    border: 0;
+}
+
+.tree li:last-child::before {
+    height: 14px;
+}
+
+.tree li:not(.parent_li) span {
+    position: relative;
+}
+
+.tree li span:before {
+    content: "";
+    position: absolute;
+    /* border-width - 1px */
+    left: -4px;
+    /* bottom: calc(50%); */
+    top: 18px;
+    border-color: transparent;
+    border-left-color: #999;
+    border-style: inherit;
+    border-width: 4px;
+}
+
+/* another styles for parent_li immediate span children */
+.tree li.parent_li>span:before {
+    bottom: initial;
+    left: 2px;
+    top: 20.5px;
+}
+
+/* hide arrow for immediate children */
+.tree>ul>li>span:before {
+    display: none;
+}
+
+.tree li.parent_li>span:hover,
+.tree li.parent_li>span:hover+ul li span {
+    background: #eee;
+    border: 1px solid #94a0b4;
+    color: #000;
+}
+
+
+#watermarkImage {
+    font-size: 24px;
+    position: fixed !important;
+    top: 60%;
+    left: 60%;
+    z-index: 1;
+    opacity: 0.05 !important;
+    pointer-events:none;
+    /* transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg); */
+}
+
+body::after{
+
+}
+
+#watermarkAuthor {
+    /* content: 'Ajay Yadukrishnan';
+    white-space: pre; */
+    color: #bbb;
+    font-size: 24px;
+    position: fixed !important;
+    top: 63%;
+    left: 78%;
+    z-index: 1;
+    opacity: 0.4;
+    pointer-events:none;
+    /* transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg); */
+}
+
+body:before {
+    content: '\0041\006a\0061\0079\0020\0059\0061\0064\0075\006b\0072\0069\0073\0068\006e\0061\006e';
+    white-space: pre;
+    font-family: 'Poppins', sans-serif !important;
+    position: fixed !important;
+    top: 72%;
+    left: 78%;
+    z-index: 99;
+
+    color: #94a0b4;
+    font-size: 24px;
+    font-weight: 500px;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    opacity: 0.3;
+    /* transform: rotate(-45deg); */
 }
